@@ -5,7 +5,7 @@ import DonateButton from "@/components/shared/donate-button";
 import SwapButton from "@/components/shared/swap-button";
 import GradualSpacing from "@/components/ui/gradual-spacing";
 import ShineBorder from "@/components/ui/shine-border";
-import { fetchAssets } from "@/lib/services/actions";
+import { fetchAssets, sendAtomicSwap } from "@/lib/services/actions";
 
 export default function Home() {
   return (
@@ -25,7 +25,7 @@ export default function Home() {
 
           <section className="flex w-full items-center justify-end gap-4">
             <DonateButton />
-            <SwapButton />
+            <SwapButton sendAtomicSwap={sendAtomicSwap} />
           </section>
         </ShineBorder>
       </main>

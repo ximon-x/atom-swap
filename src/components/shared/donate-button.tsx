@@ -21,14 +21,14 @@ export default function DonateButton() {
 
   const { toast } = useToast();
 
-  if (!isConnected || !activeAccount) {
-    return null;
-  }
-
   const handleDonation = async () => {
     setLoading(true);
 
     try {
+      if (!activeAccount) {
+        return null;
+      }
+
       const suggestedParams = await algod.getTransactionParams().do();
 
       const paymentTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({

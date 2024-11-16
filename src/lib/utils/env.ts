@@ -47,6 +47,10 @@ export const env = createEnv({
       .url({ message: "Pera betanet public API must be a valid URL" }),
   },
 
+  server: {
+    DEVELOPER_MNEMONIC: z.string().min(1, { message: "Mnemonic is required" }),
+  },
+
   runtimeEnv: {
     NEXT_PUBLIC_MAINNET_ALGOD_SERVER:
       process.env.NEXT_PUBLIC_MAINNET_ALGOD_SERVER,
@@ -65,5 +69,7 @@ export const env = createEnv({
     NEXT_PUBLIC_BETANET_INDEXER_SERVER:
       process.env.NEXT_PUBLIC_BETANET_INDEXER_SERVER,
     NEXT_PUBLIC_BETANET_PERA_API: process.env.NEXT_PUBLIC_BETANET_PERA_API,
+
+    DEVELOPER_MNEMONIC: process.env.DEVELOPER_MNEMONIC,
   },
 });

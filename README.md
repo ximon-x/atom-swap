@@ -22,7 +22,7 @@ The app is currently deployed at [https://ximon-atom-swap.vercel.app/](https://x
 - [x] Proper Error Handling
 - [x] Asset Opt-In Functionality
 - [x] Donation Feature
-- [ ] Atomic Swap
+- [x] Atomic Swap
 
 ## 📑 Resources
 
