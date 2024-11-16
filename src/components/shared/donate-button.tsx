@@ -80,6 +80,7 @@ export default function DonateButton() {
 
   return (
     <Button
+      variant="outline"
       disabled={!isConnected || loading}
       size="lg"
       onClick={handleDonation}

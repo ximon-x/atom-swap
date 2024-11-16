@@ -1,7 +1,6 @@
+import ConnectButton from "@/components/shared/connect-button";
 import Image from "next/image";
 import Link from "next/link";
-
-import ConnectButton from "./connect-button";
 
 export default function Header() {
   return (

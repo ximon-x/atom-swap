@@ -126,7 +126,7 @@ export default function ConnectButton() {
                   ? "Testnet"
                   : network === AlgorandNetworks.betanet
                     ? "Betanet"
-                    : "Localnet"}
+                    : null}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
