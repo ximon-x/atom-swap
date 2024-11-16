@@ -1,5 +1,11 @@
-# Pera Challenge Solution by Simon Samuel
+<h1 align="center">
+ Pera Challenge Solution
+<h1>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/53816ade-10d3-4756-9a08-2b1fe98361d0" />
+<p>
 
+  
 ## About Pera
 
 Welcome to the **Pera Challenge**! Pera is the leading gateway for Algorand projects, providing essential tools and libraries for developers. This challenge simulates real-world scenarios in decentralized application (dApp) development using [Pera Connect](https://github.com/perawallet/connect) —a library designed to simplify wallet integration and blockchain interactions.
