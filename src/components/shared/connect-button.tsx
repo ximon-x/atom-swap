@@ -150,13 +150,6 @@ export default function ConnectButton() {
             >
               Betanet
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => setNetwork(AlgorandNetworks.localnet)}
-              disabled={network === AlgorandNetworks.localnet}
-            >
-              Localnet
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </DialogContent>

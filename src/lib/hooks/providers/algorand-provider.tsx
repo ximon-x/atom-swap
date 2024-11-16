@@ -1,6 +1,9 @@
 "use client";
 
+import { env } from "@/lib/utils";
 import { PeraWalletConnect } from "@perawallet/connect";
+import { SignerTransaction } from "@perawallet/connect/dist/util/model/peraWalletModels";
+import algosdk from "algosdk";
 import {
   Dispatch,
   SetStateAction,
@@ -17,16 +20,21 @@ export enum AlgorandNetworks {
   mainnet = 416001,
   testnet = 416002,
   betanet = 416003,
-  localnet = 4160,
 }
 
 type AlgorandContextType = {
   accounts: string[];
   isConnected: boolean;
+  algod: algosdk.Algodv2;
+  indexer: algosdk.Indexer;
   network: AlgorandNetworks;
   connectAccount: () => void;
   activeAccount: string | null;
   disconnectAccount: () => void;
+  signTransaction: (
+    txGroups: SignerTransaction[][],
+    signerAddress?: string,
+  ) => Promise<Uint8Array[]>;
   setActiveAccount: Dispatch<SetStateAction<string | null>>;
   setNetwork: Dispatch<SetStateAction<AlgorandNetworks>>;
 };
@@ -39,7 +47,10 @@ export const AlgorandContext = createContext<AlgorandContextType>({
   connectAccount: () => {},
   setActiveAccount: () => {},
   disconnectAccount: () => {},
+  signTransaction: async () => [],
   network: AlgorandNetworks.testnet,
+  algod: new algosdk.Algodv2("", "http://localhost:4001", ""),
+  indexer: new algosdk.Indexer("", "http://localhost:8080", ""),
 });
 
 type Props = {
@@ -54,6 +65,66 @@ export default function AlgorandProvider({ children }: Props) {
   const [network, setNetwork] = useState<AlgorandNetworks>(
     AlgorandNetworks.testnet,
   );
+
+  const { algod, indexer } = useMemo(() => {
+    switch (network) {
+      case AlgorandNetworks.mainnet:
+        return {
+          algod: new algosdk.Algodv2(
+            "",
+            env.NEXT_PUBLIC_MAINNET_ALGOD_SERVER,
+            "",
+          ),
+          indexer: new algosdk.Indexer(
+            "",
+            env.NEXT_PUBLIC_MAINNET_INDEXER_SERVER,
+            "",
+          ),
+        };
+
+      case AlgorandNetworks.testnet:
+        return {
+          algod: new algosdk.Algodv2(
+            "",
+            env.NEXT_PUBLIC_TESTNET_ALGOD_SERVER,
+            "",
+          ),
+          indexer: new algosdk.Indexer(
+            "",
+            env.NEXT_PUBLIC_TESTNET_INDEXER_SERVER,
+            "",
+          ),
+        };
+
+      case AlgorandNetworks.betanet:
+        return {
+          algod: new algosdk.Algodv2(
+            "",
+            env.NEXT_PUBLIC_BETANET_ALGOD_SERVER,
+            "",
+          ),
+          indexer: new algosdk.Indexer(
+            "",
+            env.NEXT_PUBLIC_BETANET_INDEXER_SERVER,
+            "",
+          ),
+        };
+
+      default:
+        return {
+          algod: new algosdk.Algodv2(
+            "",
+            env.NEXT_PUBLIC_TESTNET_ALGOD_SERVER,
+            "",
+          ),
+          indexer: new algosdk.Indexer(
+            "",
+            env.NEXT_PUBLIC_TESTNET_INDEXER_SERVER,
+            "",
+          ),
+        };
+    }
+  }, [network]);
 
   const peraWallet = useMemo(
     () =>
@@ -97,6 +168,13 @@ export default function AlgorandProvider({ children }: Props) {
       });
   };
 
+  const signTransaction = useCallback(
+    async (txGroups: SignerTransaction[][]) => {
+      return peraWallet.signTransaction(txGroups);
+    },
+    [peraWallet],
+  );
+
   useEffect(() => {
     peraWallet
       .reconnectSession()
@@ -118,6 +196,8 @@ export default function AlgorandProvider({ children }: Props) {
   return (
     <AlgorandContext.Provider
       value={{
+        algod,
+        indexer,
         network,
         accounts,
         setNetwork,
@@ -126,6 +206,7 @@ export default function AlgorandProvider({ children }: Props) {
         connectAccount,
         setActiveAccount,
         disconnectAccount,
+        signTransaction,
       }}
     >
       {children}
